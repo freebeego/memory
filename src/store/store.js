@@ -1,7 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
+import winnerReducer from './winners/winnersSlice';
 
-/*export const store = configureStore({
+export const store = configureStore({
   reducer: {
-    store: counterReducer,
+    winners: winnerReducer,
   },
-});*/
+});
