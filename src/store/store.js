@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import winnerReducer from './winners/winnersSlice';
+import cardsSlice from './cards/cardsSlice';
+import timerSlice from './timer/timerSlice';
 
 export const store = configureStore({
   reducer: {
-    winners: winnerReducer,
+    cards: cardsSlice,
+    timer: timerSlice
   },
 });

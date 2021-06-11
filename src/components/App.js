@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { images } from '../config/constants';
-import shuffle from '../utils/shuffle';
+import { useDispatch, useSelector } from 'react-redux';
+import { shuffleCards } from '../store/cards/cardsSlice';
+import { restartTimer, startTimer } from '../store/timer/timerSlice';
+import Timer from './Timer/Timer';
 
 const Header = styled.header`
   display: flex;
@@ -10,16 +12,39 @@ const Header = styled.header`
 `;
 
 const Title = styled.h1`
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 900;
+  font-size: 32px;
   margin: 0;
 `;
 
-const ResultsTable = styled.button`
-  background: none;
+const ResultsTableButton = styled.button`
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 16px;
+  background-color: #f0f8ff;
+  border-radius: 15px;
+  border: 1px solid #000000;
+  width: 133px;
+  height: 35px;
+  box-sizing: border-box;
+
+  &:hover {
+    cursor: pointer;
+    opacity: .6;
+  }
+`;
+
+const StartButton = styled.button`
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 16px;
+  text-transform: uppercase;
+  background-color: #f0f8ff;
   border-radius: 15px;
   border: 1px solid #000000;
   width: 150px;
   height: 35px;
   box-sizing: border-box;
+  margin: 0 auto;
 
   &:hover {
     cursor: pointer;
@@ -42,7 +67,14 @@ const Card = styled.div`
 
   &:hover {
     cursor: pointer;
-    background-color: #f1f1f1;
+  }
+
+  & .front {
+    transform: ${props => props.opened ? 'rotateY(360deg)' : 'rotateY(180deg)'};
+  }
+
+  & .back {
+    transform: ${props => props.opened ? 'rotateY(180deg)' : 'none'};
   }
 `;
 
@@ -59,12 +91,7 @@ const CardFront = styled.div`
   left: 0;
   top: 0;
   backface-visibility: hidden;
-  transform: rotateY(180deg);
   transition: 1s;
-
-  .card:hover & {
-    transform: rotateY(360deg);
-  }
 `;
 
 const CardBack = styled.div`
@@ -76,28 +103,43 @@ const CardBack = styled.div`
   top: 0;
   backface-visibility: hidden;
   transition: 1s;
-
-  .card:hover & {
-    transform: rotateY(180deg);
-  }
 `;
 
 function App() {
+  const dispatch = useDispatch();
+
+  const cards = useSelector((state) => state.cards);
+  const timer = useSelector((state) => state.timer);
+
+  function onStart() {
+    if (!timer.isStarted) {
+      dispatch(shuffleCards());
+      dispatch(startTimer());
+    } else {
+      dispatch(shuffleCards());
+      dispatch(restartTimer());
+    }
+  }
+
   return (
     <>
       <Header>
         <Title>
           Memory
         </Title>
-        <ResultsTable>
+        {timer.isStarted ? <Timer /> : ''}
+        <ResultsTableButton>
           Results
-        </ResultsTable>
+        </ResultsTableButton>
       </Header>
+      <StartButton onClick={onStart}>
+        {!timer.isStarted ? 'start' : 'restart'}
+      </StartButton>
         <GameContainer>
-          {shuffle(images.concat(images)).map((image, index) =>
-            <Card key={index} className="card">
-              <CardFront image={image} />
-              <CardBack />
+          {cards.map((image, index) =>
+            <Card key={index}>
+              <CardFront image={image} className="front" />
+              <CardBack className="back" />
             </Card>
           )}
         </GameContainer>
