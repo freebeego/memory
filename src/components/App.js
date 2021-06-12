@@ -8,6 +8,7 @@ import Cards from './Cards/Cards';
 import Popup from './Popup/Popup';
 import YourTime from './YourTime/YourTime';
 import SaveTimeForm from './SaveTimeForm/SaveTimeForm';
+import Results from './Results/Results';
 
 const StartButton = styled.button`
   font-family: 'Inter', Arial, sans-serif;
@@ -58,6 +59,12 @@ function App() {
       >
         <YourTime />
         <SaveTimeForm />
+      </Popup>
+      <Popup
+        isOpen={popups.isResultsOpened}
+        title="Results"
+      >
+        <Results />
       </Popup>
     </>
   );

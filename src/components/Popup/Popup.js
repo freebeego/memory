@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import plus from '../../images/plus.svg';
 import { useDispatch } from 'react-redux';
-import { closeSaveResult } from '../../store/popups/popupsSlice';
+import { closePopups } from '../../store/popups/popupsSlice';
 
 const Overlay = styled.div`
   position: fixed;
@@ -27,7 +27,9 @@ const Container = styled.div`
   gap: 20px;
   background-color: #fff;
   width: 60vw;
-  padding: 30px 0;
+  max-height: 600px;
+  box-sizing: border-box;
+  padding: 30px 0 40px;
   position: relative;
 `;
 
@@ -63,12 +65,12 @@ function Popup({ children, title, isOpen }) {
   const dispatch = useDispatch();
 
   function closePopup() {
-    dispatch(closeSaveResult());
+    dispatch(closePopups());
   }
 
   function onOverlayClick(e) {
     if (e.target === e.currentTarget) {
-      dispatch(closeSaveResult());
+      dispatch(closePopups());
     }
   }
 

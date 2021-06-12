@@ -1,10 +1,8 @@
 import Timer from '../Timer/Timer';
 import React from 'react';
 import styled from 'styled-components';
-import { stopTimer } from '../../store/timer/timerSlice';
-import { endGame } from '../../store/game/gameSlice';
 import { useDispatch } from 'react-redux';
-import { openSaveResult } from '../../store/popups/popupsSlice';
+import { openResults } from '../../store/popups/popupsSlice';
 
 const HeaderElement = styled.header`
   display: flex;
@@ -40,9 +38,7 @@ function Header() {
   const dispatch = useDispatch();
 
   function showResults() {
-    dispatch(stopTimer());
-    dispatch(endGame());
-    dispatch(openSaveResult());
+    dispatch(openResults());
   }
 
   return (

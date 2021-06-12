@@ -10,23 +10,20 @@ const popupsSlice = createSlice({
     openSaveResult: (state) => {
       state.isSaveResultOpened = true;
     },
-    closeSaveResult: (state) => {
-      state.isSaveResultOpened = false;
-    },
     openResults: (state) => {
       state.isResultsOpened = true;
     },
-    closeResults: (state) => {
+    closePopups: (state) => {
+      state.isSaveResultOpened = false;
       state.isResultsOpened = false;
-    }
+    },
   }
 });
 
 export const {
   openSaveResult,
-  closeSaveResult,
   openResults,
-  closeResults
+  closePopups
 } = popupsSlice.actions;
 
 export default popupsSlice.reducer;

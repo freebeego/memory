@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeSaveResult } from '../../store/popups/popupsSlice';
+import { closePopups } from '../../store/popups/popupsSlice';
 
 const Form = styled.form`
   display: flex;
@@ -96,7 +96,7 @@ function SaveTimeForm() {
       setError(true);
       inputRef.current.focus();
     } else {
-      dispatch(closeSaveResult());
+      dispatch(closePopups());
       setName('');
     }
     console.log('onSave');
