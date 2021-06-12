@@ -14,6 +14,7 @@ const gameSlice = createSlice({
       []
     ),
     wasStarted: false,
+    wasEnded: false,
     shownCard: {}
   },
   reducers: {
@@ -43,8 +44,12 @@ const gameSlice = createSlice({
       state.shownCard = {};
     },
     startGame: (state) => {
+      state.wasEnded = false;
       state.wasStarted = true;
-      state.cardsWereShuffled = false;
+    },
+    endGame: (state) => {
+      state.wasStarted = false;
+      state.wasEnded = true;
     }
   }
 });
@@ -55,6 +60,7 @@ export const {
   showCard,
   hideShownCard,
   startGame,
+  endGame,
   hideAllCards
 } = gameSlice.actions;
 

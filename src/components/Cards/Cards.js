@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { hideShownCard, openPairedCards, showCard } from '../../store/game/gameSlice';
+import { endGame, hideShownCard, openPairedCards, showCard } from '../../store/game/gameSlice';
+import { stopTimer } from '../../store/timer/timerSlice';
+import { openSaveResult } from '../../store/popups/popupsSlice';
 
 const CardsList = styled.ul`
   margin: auto;
@@ -17,38 +19,40 @@ const Card = styled.li`
   position: relative;
   height: 10vh;
   perspective: 30vw;
+  background-color: #f0f8ff;
 
   &:hover {
-    cursor: pointer;
+    cursor: ${props => props.isOpen ? 'unset' : 'pointer'};
   }
 
   & .front {
-    transform: ${props => props.opened ? 'rotateY(360deg)' : 'rotateY(180deg)'};
+    transform: ${(props) => props.opened ? 'rotateY(360deg)' : 'rotateY(180deg)'};
   }
 
   & .back {
-    transform: ${props => props.opened ? 'rotateY(180deg)' : 'none'};
+    transform: ${(props) => props.opened ? 'rotateY(180deg)' : 'none'};
   }
 `;
 
 const CardFront = styled.div`
-  background-image: url('${props => props.image}');
+  background-image: url('${(props) => props.image}');
   background-position: center;
   background-repeat: no-repeat;
   background-color: #f0f8ff;
   width: 100%;
   height: 100%;
-  border: 1px solid #000000;
+  border: 1px solid #000;
   box-sizing: border-box;
   position: absolute;
   left: 0;
   top: 0;
   backface-visibility: hidden;
-  transition: transform .6s;
+  visibility: ${(props) => props.isVisible ? 'visible' : 'hidden'};
+  transition: transform .6s, visibility .5s;
 `;
 
 const CardBack = styled.div`
-  background-color: #000000;
+  background-color: #000;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -65,6 +69,17 @@ function Cards() {
 
   const [timeoutId, setTimeoutId] = React.useState(null);
 
+  React.useEffect(
+    () => {
+      if (game.cards.every((card) => card.isOpen === true)) {
+        dispatch(stopTimer());
+        dispatch(endGame());
+        dispatch(openSaveResult());
+      }
+    },
+    [game.cards, dispatch]
+  );
+  console.log('cards');
   function onCard(card) {
     if (timeoutId !== null) {
       clearTimeout(timeoutId);
@@ -93,9 +108,10 @@ function Cards() {
         <Card
           key={card.id}
           opened={!game.wasStarted || card.isOpen || card === game.shownCard}
+          isOpen={card.isOpen}
           onClick={() => onCard(card)}
         >
-          <CardFront image={card.path} className="front" />
+          <CardFront image={card.path} className="front" isVisible={!card.isOpen} />
           <CardBack className="back" />
         </Card>
       )}
