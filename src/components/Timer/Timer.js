@@ -8,6 +8,7 @@ const TimerElement = styled.span`
   font-weight: 500;
   font-size: 32px;
   width: 92px;
+  visibility: ${props => props.isVisible ? 'visible' : 'hidden'};
 `;
 
 function Timer() {
@@ -37,7 +38,7 @@ function Timer() {
   }
 
   return (
-    <TimerElement>
+    <TimerElement isVisible={timer.isStarted}>
       {formatTimer(timer.delta)}
     </TimerElement>
   );

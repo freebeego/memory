@@ -11,9 +11,6 @@ const timerSlice = createSlice({
     startTimer: (state) => {
       state.isStarted = true;
       state.start = Date.now();
-    },
-    restartTimer: (state) => {
-      state.start = Date.now();
       state.delta = 0;
     },
     tickTimer: (state) => {
@@ -24,7 +21,6 @@ const timerSlice = createSlice({
 
 export const {
   startTimer,
-  restartTimer,
   tickTimer
 } = timerSlice.actions;
 
