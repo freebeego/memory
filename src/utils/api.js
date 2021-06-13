@@ -5,7 +5,7 @@ class Api {
     this.url = `${API_URL}/`;
   }
 
-  _fetch(path, queryParams = {}) {
+  #fetch(path, queryParams = {}) {
     const config = {};
     config.headers = { 'Accept': 'application/json' };
     if (queryParams.method) {
@@ -27,11 +27,11 @@ class Api {
   }
 
   getResults() {
-    return this._fetch('results');
+    return this.#fetch('results');
   }
 
   saveResult(result) {
-    return this._fetch('results',
+    return this.#fetch('results',
       {
         method: 'POST',
         headers: {

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { closePopups } from '../../store/popups/popupsSlice';
+import api from '../../utils/api';
 
 const Form = styled.form`
   display: flex;
@@ -64,6 +65,7 @@ function SaveTimeForm() {
   const dispatch = useDispatch();
 
   const isSaveResultOpened = useSelector(state => state.popups.isSaveResultOpened);
+  const delta = useSelector(state => state.timer.delta);
 
   const inputRef = React.useRef(null);
 
@@ -96,8 +98,11 @@ function SaveTimeForm() {
       setError(true);
       inputRef.current.focus();
     } else {
-      dispatch(closePopups());
-      setName('');
+      api.saveResult({ name, time: delta })
+        .then(() => {
+          dispatch(closePopups());
+          setName('');
+        })
     }
     console.log('onSave');
   }
