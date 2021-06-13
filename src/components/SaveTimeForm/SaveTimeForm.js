@@ -109,6 +109,7 @@ function SaveTimeForm() {
         <InputName
           autoFocus
           type="text"
+          maxLength={50}
           ref={inputRef}
           value={name}
           onChange={onChange}

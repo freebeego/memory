@@ -17,8 +17,6 @@ import zebra from '../images/zebra.svg';
 import turtle from '../images/turtle.svg';
 import wolf from '../images/wolf.svg';
 
-
-
 const images = [
   bird,
   bull,
@@ -40,4 +38,6 @@ const images = [
   wolf
 ];
 
-export { images };
+const API_URL = 'https://api.memory.listen-me.ru'
+
+export { images, API_URL };

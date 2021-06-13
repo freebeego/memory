@@ -40,12 +40,10 @@ function App() {
     } else {
       dispatch(hideAllCards());
     }
-
     dispatch(startTimer());
     dispatch(shuffleCards());
   }
   console.log('app');
-  console.log(popups.isSaveResultOpened)
   return (
     <>
       <Header />
