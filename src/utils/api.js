@@ -1,9 +1,7 @@
 import { API_URL } from '../config/constants';
 
 class Api {
-  constructor() {
-    this.url = `${API_URL}/`;
-  }
+  #url = `${API_URL}/`;
 
   #fetch(path, queryParams = {}) {
     const config = {};
@@ -18,7 +16,7 @@ class Api {
       config.body = JSON.stringify(queryParams.body);
     }
 
-    return fetch(`${this.url}${path}`, config)
+    return fetch(`${this.#url}${path}`, config)
       .then(res => {
         if (res.ok) return res.json();
 

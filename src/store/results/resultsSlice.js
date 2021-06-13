@@ -1,21 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { addNewResult, fetchResults } from './thunks';
+import sortResults from '../../utils/sortResults';
 
 const resultsSlice = createSlice({
   name: 'results',
-  initialState: [],
+  initialState: {
+    results: [],
+    fetchStatus: 'idle'
+  },
   reducers: {
-    setCards: (state, action) => {
-      return action.payload.sort((a, b) => a.time - b.time);
+    setDefaultFetchStatus: (state) => {
+      state.fetchStatus = 'idle';
+    }
+  },
+  extraReducers: {
+    [fetchResults.fulfilled]: (state, action) => {
+      state.results = sortResults(action.payload);
     },
-    addCard: (state, action) => {
-      return [ ...state, action.payload].sort((a, b) => a.time - b.time);
+    [addNewResult.pending]: (state) => {
+      state.fetchStatus = 'loading';
+    },
+    [addNewResult.fulfilled]: (state, action) => {
+      state.fetchStatus = 'succeeded';
+      state.results = sortResults([ ...state.results, action.payload]);
+    },
+    [addNewResult.rejected]: (state) => {
+      state.fetchStatus = 'failed';
     }
   }
 });
 
 export const {
-  setCards,
-  addCard
+  setDefaultFetchStatus
 } = resultsSlice.actions;
 
 export default resultsSlice.reducer;

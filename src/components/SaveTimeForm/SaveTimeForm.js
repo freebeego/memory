@@ -2,7 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { closePopups } from '../../store/popups/popupsSlice';
-import api from '../../utils/api';
+import { addNewResult } from '../../store/results/thunks';
+import { selectFetchStatus } from '../../store/results/selectors';
+import { errors } from '../../config/constants';
+import { setDefaultFetchStatus } from '../../store/results/resultsSlice';
 
 const Form = styled.form`
   display: flex;
@@ -66,6 +69,7 @@ function SaveTimeForm() {
 
   const isSaveResultOpened = useSelector(state => state.popups.isSaveResultOpened);
   const delta = useSelector(state => state.timer.delta);
+  const fetchStatus = useSelector(selectFetchStatus);
 
   const inputRef = React.useRef(null);
 
@@ -85,6 +89,19 @@ function SaveTimeForm() {
     [isSaveResultOpened]
   );
 
+  React.useEffect(
+    () => {
+      if (fetchStatus === 'failed') {
+        setError(true);
+      } else if (fetchStatus === 'succeeded') {
+        dispatch(closePopups());
+        dispatch(setDefaultFetchStatus());
+        setName('');
+      }
+    },
+    [fetchStatus, dispatch]
+  );
+
   function onChange(e) {
     setName(e.target.value);
     if (error && e.target.value) {
@@ -98,13 +115,8 @@ function SaveTimeForm() {
       setError(true);
       inputRef.current.focus();
     } else {
-      api.saveResult({ name, time: delta })
-        .then(() => {
-          dispatch(closePopups());
-          setName('');
-        })
+      dispatch(addNewResult({ name, time: delta }));
     }
-    console.log('onSave');
   }
 
   return (
@@ -121,9 +133,11 @@ function SaveTimeForm() {
           required
         />
       </LabelName>
-      <Error isShown={error}>Please, enter the name.</Error>
-      <SaveButton type='submit'>
-        Save
+      <Error isShown={error}>
+        {fetchStatus === 'failed' ? errors.saveResultFetchIsFailed : errors.nameIsEmpty }
+      </Error>
+      <SaveButton type='submit' disabled={fetchStatus === 'loading'}>
+        {fetchStatus === 'loading' ? 'Saving...' : 'Save'}
       </SaveButton>
     </Form>
   );

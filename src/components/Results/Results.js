@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import formatTimer from '../../utils/formatTimer';
+import { useSelector } from 'react-redux';
+import { selectResults } from '../../store/results/selectors';
 
 const Container = styled.div`
   display: flex;
@@ -76,34 +78,9 @@ const ResultText = styled.span`
   }
 `;
 
-const winners = [
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sddsfdfsdsfsdffdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-  { name: 'sdfdsf', time: 250 },
-];
-
 function Results() {
+  const results = useSelector(selectResults);
+
   return (
     <Container>
       <ListTitle>
@@ -111,10 +88,10 @@ function Results() {
         <ColumnTitle>Time</ColumnTitle>
       </ListTitle>
       <ResultsList>
-        {winners.map((winner, index) =>
-          <Result key={index}>
-            <ResultText>{winner.name}</ResultText>
-            <ResultText>{formatTimer(winner.time)}</ResultText>
+        {results.map((result) =>
+          <Result key={result._id}>
+            <ResultText>{result.name}</ResultText>
+            <ResultText>{formatTimer(result.time)}</ResultText>
           </Result>
         )}
       </ResultsList>

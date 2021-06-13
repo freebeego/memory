@@ -38,6 +38,15 @@ const images = [
   wolf
 ];
 
-const API_URL = 'https://api.memory.listen-me.ru'
+const API_URL = 'https://api.memory.listen-me.ru';
 
-export { images, API_URL };
+const errors = {
+  nameIsEmpty: 'Please, enter the name.',
+  saveResultFetchIsFailed: 'Sorry, saving the result is failed. =('
+};
+
+export {
+  images,
+  API_URL,
+  errors
+};

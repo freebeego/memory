@@ -7,6 +7,9 @@ import App from './components/App';
 import { store } from './store/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+import { fetchResults } from './store/results/thunks';
+
+store.dispatch(fetchResults());
 
 ReactDOM.render(
   <React.StrictMode>
