@@ -1,3 +1,5 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import formatTimer from '../../utils/formatTimer';
 import { connect } from 'react-redux';
@@ -21,5 +23,9 @@ function YourTime({ delta }) {
 const mapStateToProps = (state) => ({
   delta: selectDelta(state)
 });
+
+YourTime.propTypes = {
+  delta: PropTypes.number.isRequired
+};
 
 export default connect(mapStateToProps)(YourTime);

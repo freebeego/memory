@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import plus from '../../images/plus.svg';
 import { connect } from 'react-redux';
@@ -84,5 +85,12 @@ function Popup({ children, title, isOpen, closePopups }) {
 const mapDispatchToProps = (dispatch) => ({
   closePopups: () => dispatch(closePopups())
 });
+
+Popup.propTypes = {
+  children: PropTypes.node.isRequired,
+  title: PropTypes.string.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  closePopups: PropTypes.func.isRequired
+};
 
 export default connect(null, mapDispatchToProps)(Popup);

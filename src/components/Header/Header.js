@@ -1,5 +1,6 @@
 import Timer from '../Timer/Timer';
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { openResults } from '../../store/popups/popupsSlice';
@@ -51,5 +52,9 @@ function Header({ openResults }) {
 const mapDispatchToProps = (dispatch) => ({
   openResults: () => dispatch(openResults())
 });
+
+Header.propTypes = {
+  openResults: PropTypes.func.isRequired
+};
 
 export default connect(null, mapDispatchToProps)(Header);

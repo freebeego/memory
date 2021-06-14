@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { closePopups, openResults } from '../../store/popups/popupsSlice';
@@ -161,6 +162,14 @@ const mapDispatchToProps = (dispatch) => ({
   addNewResult: (result) => dispatch(addNewResult(result))
 });
 
-
+SaveTimeForm.propTypes = {
+  isSaveResultOpened: PropTypes.bool.isRequired,
+  delta: PropTypes.number.isRequired,
+  fetchStatus: PropTypes.string.isRequired,
+  closePopups: PropTypes.func.isRequired,
+  setDefaultFetchStatus: PropTypes.func.isRequired,
+  openResults: PropTypes.func.isRequired,
+  addNewResult: PropTypes.func.isRequired
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SaveTimeForm);

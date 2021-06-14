@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { startGame } from '../store/game/thunks';
@@ -63,5 +64,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   startGame: () => dispatch(startGame())
 });
+
+App.propTypes = {
+  isGameStarted: PropTypes.bool.isRequired,
+  isSaveResultOpened: PropTypes.bool.isRequired,
+  isResultsOpened: PropTypes.bool.isRequired,
+  startGame: PropTypes.func.isRequired
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

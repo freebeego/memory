@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { TRANSITION_TIME } from '../../config/constants';
@@ -126,5 +127,22 @@ const mapDispatchToProps = (dispatch) => ({
   selectCard: (selectedCard) => dispatch(selectCard(selectedCard)),
   finishGame: () => dispatch(finishGame()),
 });
+
+const cardTypesTemplate = {
+  id: PropTypes.string,
+  isVisible: PropTypes.bool,
+  path: PropTypes.string
+};
+
+Cards.propTypes = {
+  cards: PropTypes.arrayOf(PropTypes.object),
+  isGameStarted: PropTypes.bool.isRequired,
+  isGameFinished: PropTypes.bool.isRequired,
+  firstSelectedCard: PropTypes.shape(cardTypesTemplate),
+  secondSelectedCard: PropTypes.shape(cardTypesTemplate),
+  hiddenCardsNumber: PropTypes.number,
+  selectCard: PropTypes.func.isRequired,
+  finishGame: PropTypes.func.isRequired
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cards);

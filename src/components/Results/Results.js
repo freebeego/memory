@@ -1,3 +1,5 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import formatTimer from '../../utils/formatTimer';
 import { connect } from 'react-redux';
@@ -102,5 +104,15 @@ const mapStateToProps = (state) => ({
   results: selectResults(state),
   lastResult: selectLastResult(state)
 });
+
+const resultTypesTemplate = {
+  name: PropTypes.string,
+  time: PropTypes.number
+};
+
+Results.propTypes = {
+  results: PropTypes.arrayOf(PropTypes.shape(resultTypesTemplate)),
+  lastResult: PropTypes.shape(resultTypesTemplate)
+};
 
 export default connect(mapStateToProps)(Results);

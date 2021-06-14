@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { tickTimer } from '../../store/timer/timerSlice';
@@ -42,5 +43,11 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   tickTimer: () => dispatch(tickTimer()),
 });
+
+Timer.propTypes = {
+  isTimerStarted: PropTypes.bool.isRequired,
+  delta: PropTypes.number.isRequired,
+  tickTimer: PropTypes.func.isRequired
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Timer);
