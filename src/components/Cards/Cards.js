@@ -80,7 +80,7 @@ function Cards() {
       dispatch(selectCard(selectedCard));
     }
   }
-console.log(game.isFinished);
+
   return (
     <CardsList>
       {game.cards.map((card) =>

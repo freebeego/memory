@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { closePopups } from '../../store/popups/popupsSlice';
+import { closePopups, openResults } from '../../store/popups/popupsSlice';
 import { addNewResult } from '../../store/results/thunks';
 import { selectFetchStatus } from '../../store/results/selectors';
 import { errors } from '../../config/constants';
@@ -97,6 +97,7 @@ function SaveTimeForm() {
         dispatch(closePopups());
         dispatch(setDefaultFetchStatus());
         setName('');
+        dispatch(openResults());
       }
     },
     [fetchStatus, dispatch]

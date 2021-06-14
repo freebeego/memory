@@ -6,6 +6,7 @@ const resultsSlice = createSlice({
   name: 'results',
   initialState: {
     results: [],
+    lastResult: null,
     fetchStatus: 'idle'
   },
   reducers: {
@@ -23,6 +24,7 @@ const resultsSlice = createSlice({
     [addNewResult.fulfilled]: (state, action) => {
       state.fetchStatus = 'succeeded';
       state.results = sortResults([ ...state.results, action.payload]);
+      state.lastResult = action.payload;
     },
     [addNewResult.rejected]: (state) => {
       state.fetchStatus = 'failed';

@@ -9,6 +9,7 @@ import {
 } from './gameSlice';
 import { TRANSITION_TIME } from '../../config/constants';
 import { startTimer, stopTimer } from '../timer/timerSlice';
+import { openSaveResult } from '../popups/popupsSlice';
 
 const startGame = createAsyncThunk(
   'game/startGame',
@@ -67,6 +68,7 @@ const finishGame = createAsyncThunk(
   (_, { dispatch }) => {
     dispatch(stopTimer());
     dispatch(finish());
+    dispatch(openSaveResult());
   }
 );
 

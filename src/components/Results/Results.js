@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import formatTimer from '../../utils/formatTimer';
 import { useSelector } from 'react-redux';
-import { selectResults } from '../../store/results/selectors';
+import { selectLastResult, selectResults } from '../../store/results/selectors';
 
 const Container = styled.div`
   display: flex;
@@ -64,6 +64,7 @@ const ResultText = styled.span`
   font-family: 'Inter', Arial, sans-serif;
   font-size: 18px;
   text-align: center;
+  color: ${props => props.current ? 'red' : '#000'};
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 2px 0;
@@ -80,6 +81,7 @@ const ResultText = styled.span`
 
 function Results() {
   const results = useSelector(selectResults);
+  const lastResult = useSelector(selectLastResult);
 
   return (
     <Container>
@@ -90,8 +92,8 @@ function Results() {
       <ResultsList>
         {results.map((result) =>
           <Result key={result._id}>
-            <ResultText>{result.name}</ResultText>
-            <ResultText>{formatTimer(result.time)}</ResultText>
+            <ResultText current={result === lastResult}>{result.name}</ResultText>
+            <ResultText current={result === lastResult}>{formatTimer(result.time)}</ResultText>
           </Result>
         )}
       </ResultsList>
