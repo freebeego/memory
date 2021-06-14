@@ -1,7 +1,7 @@
 import Timer from '../Timer/Timer';
 import React from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { openResults } from '../../store/popups/popupsSlice';
 
 const HeaderElement = styled.header`
@@ -34,24 +34,22 @@ const ResultsTableButton = styled.button`
   }
 `;
 
-function Header() {
-  const dispatch = useDispatch();
-
-  function showResults() {
-    dispatch(openResults());
-  }
-
+function Header({ openResults }) {
   return (
     <HeaderElement>
       <Title>
         Memory
       </Title>
       <Timer />
-      <ResultsTableButton onClick={showResults}>
+      <ResultsTableButton onClick={openResults}>
         Results
       </ResultsTableButton>
     </HeaderElement>
   );
 }
 
-export default Header;
+const mapDispatchToProps = (dispatch) => ({
+  openResults: () => dispatch(openResults())
+});
+
+export default connect(null, mapDispatchToProps)(Header);

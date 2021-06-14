@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import formatTimer from '../../utils/formatTimer';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { selectLastResult, selectResults } from '../../store/results/selectors';
 
 const Container = styled.div`
@@ -79,10 +79,7 @@ const ResultText = styled.span`
   }
 `;
 
-function Results() {
-  const results = useSelector(selectResults);
-  const lastResult = useSelector(selectLastResult);
-
+function Results({ results, lastResult }) {
   return (
     <Container>
       <ListTitle>
@@ -101,4 +98,9 @@ function Results() {
   );
 }
 
-export default Results;
+const mapStateToProps = (state) => ({
+  results: selectResults(state),
+  lastResult: selectLastResult(state)
+});
+
+export default connect(mapStateToProps)(Results);

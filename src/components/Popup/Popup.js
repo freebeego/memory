@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import plus from '../../images/plus.svg';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { closePopups } from '../../store/popups/popupsSlice';
 
 const Overlay = styled.div`
@@ -61,23 +61,17 @@ const Title = styled.h2`
   margin: 0;
 `;
 
-function Popup({ children, title, isOpen }) {
-  const dispatch = useDispatch();
-
-  function closePopup() {
-    dispatch(closePopups());
-  }
-
+function Popup({ children, title, isOpen, closePopups }) {
   function onOverlayClick(e) {
     if (e.target === e.currentTarget) {
-      dispatch(closePopups());
+      closePopups();
     }
   }
 
   return (
     <Overlay isOpen={isOpen} onMouseDown={onOverlayClick}>
       <Container>
-        <CloseButton type="button" onClick={closePopup} />
+        <CloseButton type="button" onClick={closePopups} />
         <Title>
           {title}
         </Title>
@@ -87,4 +81,8 @@ function Popup({ children, title, isOpen }) {
   );
 }
 
-export default Popup;
+const mapDispatchToProps = (dispatch) => ({
+  closePopups: () => dispatch(closePopups())
+});
+
+export default connect(null, mapDispatchToProps)(Popup);

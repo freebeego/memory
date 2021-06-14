@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { tickTimer } from '../../store/timer/timerSlice';
 import formatTimer from '../../utils/formatTimer';
 import { selectDelta, selectIsTimerStarted } from '../../store/timer/selectors';
@@ -12,24 +12,19 @@ const TimerElement = styled.span`
   width: 92px;
 `;
 
-function Timer() {
-  const dispatch = useDispatch();
-
-  const isTimerStarted = useSelector(selectIsTimerStarted);
-  const delta = useSelector(selectDelta);
-
+function Timer({ isTimerStarted, delta, tickTimer }) {
   React.useEffect(
     () => {
       if (isTimerStarted) {
         const intervalId = setInterval(
-          () => dispatch(tickTimer()),
+          () => tickTimer(),
           1000
         );
 
         return () => clearInterval(intervalId);
       }
     },
-    [dispatch, isTimerStarted]
+    [isTimerStarted, tickTimer]
   );
 
   return (
@@ -39,4 +34,13 @@ function Timer() {
   );
 }
 
-export default Timer;
+const mapStateToProps = (state) => ({
+  isTimerStarted: selectIsTimerStarted(state),
+  delta: selectDelta(state)
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  tickTimer: () => dispatch(tickTimer()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

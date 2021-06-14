@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { closePopups, openResults } from '../../store/popups/popupsSlice';
 import { addNewResult } from '../../store/results/thunks';
 import { selectFetchStatus } from '../../store/results/selectors';
@@ -66,13 +66,15 @@ const SaveButton = styled.button`
   }
 `;
 
-function SaveTimeForm() {
-  const dispatch = useDispatch();
-
-  const isSaveResultOpened = useSelector(selectIsSaveResultOpened);
-  const delta = useSelector(selectDelta);
-  const fetchStatus = useSelector(selectFetchStatus);
-
+function SaveTimeForm({
+                        isSaveResultOpened,
+                        delta,
+                        fetchStatus,
+                        closePopups,
+                        setDefaultFetchStatus,
+                        openResults,
+                        addNewResult
+}) {
   const inputRef = React.useRef(null);
 
   const [name, setName] = React.useState('');
@@ -96,13 +98,13 @@ function SaveTimeForm() {
       if (fetchStatus === 'failed') {
         setError(true);
       } else if (fetchStatus === 'succeeded') {
-        dispatch(closePopups());
-        dispatch(setDefaultFetchStatus());
+        closePopups();
+        setDefaultFetchStatus();
         setName('');
-        dispatch(openResults());
+        openResults();
       }
     },
-    [fetchStatus, dispatch]
+    [fetchStatus, closePopups, setDefaultFetchStatus, openResults]
   );
 
   function onChange(e) {
@@ -118,7 +120,7 @@ function SaveTimeForm() {
       setError(true);
       inputRef.current.focus();
     } else {
-      dispatch(addNewResult({ name, time: delta }));
+      addNewResult({ name, time: delta });
     }
   }
 
@@ -146,4 +148,19 @@ function SaveTimeForm() {
   );
 }
 
-export default SaveTimeForm;
+const mapStateToProps = (state) => ({
+  isSaveResultOpened: selectIsSaveResultOpened(state),
+  delta: selectDelta(state),
+  fetchStatus: selectFetchStatus(state)
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  closePopups: () => dispatch(closePopups()),
+  setDefaultFetchStatus: () => dispatch(setDefaultFetchStatus()),
+  openResults: () => dispatch(openResults()),
+  addNewResult: (result) => dispatch(addNewResult(result))
+});
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SaveTimeForm);

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { TRANSITION_TIME } from '../../config/constants';
 import { finishGame, selectCard } from '../../store/game/thunks';
 import {
@@ -69,39 +69,39 @@ const CardBack = styled.div`
   transition: transform ${String(TRANSITION_TIME)}s;
 `;
 
-function Cards() {
-  const dispatch = useDispatch();
-
-  const Cards = useSelector(selectCards);
-  const IsGameStarted = useSelector(selectIsGameStarted);
-  const IsGameFinished = useSelector(selectIsGameFinished);
-  const FirstSelectedCard = useSelector(selectFirstSelectedCard);
-  const SecondSelectedCard = useSelector(selectSecondSelectedCard);
-  const HiddenCardsNumber = useSelector(selectHiddenCardsNumber);
-
+function Cards({
+                 cards,
+                 isGameStarted,
+                 isGameFinished,
+                 firstSelectedCard,
+                 secondSelectedCard,
+                 hiddenCardsNumber,
+                 selectCard,
+                 finishGame
+}) {
   React.useEffect(
     () => {
-      if (HiddenCardsNumber === 0) {
-        dispatch(finishGame());
+      if (hiddenCardsNumber === 0) {
+        finishGame();
       }
     },
-    [HiddenCardsNumber, dispatch]
+    [hiddenCardsNumber, finishGame]
   );
 
   function onCard(selectedCard) {
-    if (selectedCard.isVisible && FirstSelectedCard !== selectedCard && SecondSelectedCard !== selectedCard) {
-      dispatch(selectCard(selectedCard));
+    if (selectedCard.isVisible && firstSelectedCard !== selectedCard && secondSelectedCard !== selectedCard) {
+      selectCard(selectedCard);
     }
   }
 
   return (
     <CardsList>
-      {Cards.map((card) =>
+      {cards.map((card) =>
         <Card
           key={card.id}
           isOpen={
-            FirstSelectedCard === card || SecondSelectedCard === card ||
-            !IsGameStarted || IsGameFinished || !card.isVisible
+            firstSelectedCard === card || secondSelectedCard === card ||
+            !isGameStarted || isGameFinished || !card.isVisible
           }
           onClick={() => onCard(card)}
         >
@@ -113,4 +113,18 @@ function Cards() {
   );
 }
 
-export default Cards;
+const mapStateToProps = (state) => ({
+  cards: selectCards(state),
+  isGameStarted: selectIsGameStarted(state),
+  isGameFinished: selectIsGameFinished(state),
+  firstSelectedCard: selectFirstSelectedCard(state),
+  secondSelectedCard: selectSecondSelectedCard(state),
+  hiddenCardsNumber: selectHiddenCardsNumber(state)
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  selectCard: (selectedCard) => dispatch(selectCard(selectedCard)),
+  finishGame: () => dispatch(finishGame())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cards);

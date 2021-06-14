@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { startGame } from '../store/game/thunks';
 import Header from './Header/Header';
 import Cards from './Cards/Cards';
@@ -29,21 +29,11 @@ const StartButton = styled.button`
   }
 `;
 
-function App() {
-  const dispatch = useDispatch();
-
-  const isGameStarted = useSelector(selectIsGameStarted);
-  const isSaveResultOpened = useSelector(selectIsSaveResultOpened);
-  const isResultsOpened = useSelector(selectIsResultsOpened);
-
-  function onStart() {
-    dispatch(startGame());
-  }
-
+function App({ isGameStarted, isSaveResultOpened, isResultsOpened, startGame }) {
   return (
     <>
       <Header />
-      <StartButton onClick={onStart}>
+      <StartButton onClick={startGame}>
         {!isGameStarted ? 'start' : 'restart'}
       </StartButton>
       <Cards />
@@ -64,4 +54,14 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  isGameStarted: selectIsGameStarted(state),
+  isSaveResultOpened: selectIsSaveResultOpened(state),
+  isResultsOpened: selectIsResultsOpened(state)
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  startGame: () => dispatch(startGame())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
