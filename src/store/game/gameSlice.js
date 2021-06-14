@@ -1,5 +1,6 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { images } from '../../config/constants';
+import makeCard from '../../utils/makeCard';
 import shuffle from '../../utils/shuffle';
 
 const gameSlice = createSlice({
@@ -8,14 +9,17 @@ const gameSlice = createSlice({
     cards: images.reduce(
       (acc, image) => [
         ...acc,
-        { id: nanoid(), isOpen: false, path: image },
-        { id: nanoid(), isOpen: false, path: image }
+        makeCard(image),
+        makeCard(image)
       ],
       []
     ),
-    wasStarted: false,
-    wasEnded: false,
-    shownCard: {}
+    isStarted: false,
+    isFinished: false,
+    firstSelectedCard: null,
+    secondSelectedCard: null,
+    timeoutId: null,
+    hiddenCardsNumber: null
   },
   reducers: {
     shuffleCards: (state) => {
@@ -29,39 +33,59 @@ const gameSlice = createSlice({
         []
       );
     },
-    openPairedCards: (state, action) => {
-      state.cards = state.cards.map((card) => card.path === action.payload.path ? { ...card, isOpen: true } : card);
-      state.shownCard = {};
+    openPairCards: (state, action) => {
+      state.cards = state.cards.map((card) => card.path === action.payload.path ? { ...card, isVisible: false } : card);
+      state.hiddenCardsNumber = state.hiddenCardsNumber - 2;
     },
-    showCard: (state, action) => {
-      state.shownCard = action.payload;
+    setSelectedCard: (state, action) => {
+      if (!state.firstSelectedCard) {
+        state.firstSelectedCard = action.payload;
+      } else if (!state.secondSelectedCard) {
+        state.secondSelectedCard = action.payload;
+      } else {
+        state.firstSelectedCard = action.payload;
+        state.secondSelectedCard = null;
+      }
     },
-    hideShownCard: (state) => {
-      state.shownCard = {};
+    unsetSelectedCards: (state) => {
+      state.firstSelectedCard = null;
+      state.secondSelectedCard = null;
     },
-    hideAllCards: (state) => {
+    setTimeoutId: (state, action) => {
+      state.timeoutId = action.payload;
+    },
+    unsetTimeoutId: (state) => {
+      state.timeoutId = null;
+    },
+    /*hideAllCards: (state) => {
       state.cards = state.cards.map((card) => ({ ...card, isOpen: false }));
-      state.shownCard = {};
+      // state.shownCard = {};
+    },*/
+    start: (state) => {
+      state.isStarted = true;
+      state.isFinished = false;
+      state.hiddenCardsNumber = state.cards.length;
     },
-    startGame: (state) => {
-      state.wasEnded = false;
-      state.wasStarted = true;
-    },
-    endGame: (state) => {
-      state.wasStarted = false;
-      state.wasEnded = true;
+    finish: (state) => {
+      state.isStarted = false;
+      state.isFinished = true;
+      state.hiddenCardsNumber = null;
+      state.cards = state.cards.map((card) => ({ ...card, isVisible: true }));
     }
   }
 });
 
 export const {
   shuffleCards,
-  openPairedCards,
-  showCard,
-  hideShownCard,
-  startGame,
-  endGame,
-  hideAllCards
+  openPairCards,
+  setSelectedCard,
+  unsetSelectedCards,
+  setTimeoutId,
+  unsetTimeoutId,
+  start,
+  finish
+  /*endGame,
+  hideAllCards*/
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

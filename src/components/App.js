@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { hideAllCards, shuffleCards, startGame } from '../store/game/gameSlice';
-import { startTimer } from '../store/timer/timerSlice';
+import { startGame } from '../store/game/thunks';
 import Header from './Header/Header';
 import Cards from './Cards/Cards';
 import Popup from './Popup/Popup';
@@ -31,24 +30,22 @@ const StartButton = styled.button`
 function App() {
   const dispatch = useDispatch();
 
-  const gameWasStarted = useSelector((state) => state.game.wasStarted);
+  const isGameStarted = useSelector((state) => state.game.isStarted);
   const popups = useSelector(state => state.popups);
 
   function onStart() {
-    if (!gameWasStarted) {
+    if (!isGameStarted) {
       dispatch(startGame());
     } else {
-      dispatch(hideAllCards());
+      // dispatch(hideAllCards());
     }
-    dispatch(startTimer());
-    dispatch(shuffleCards());
   }
-  console.log('app');
+
   return (
     <>
       <Header />
       <StartButton onClick={onStart}>
-        {!gameWasStarted ? 'start' : 'restart'}
+        {!isGameStarted ? 'start' : 'restart'}
       </StartButton>
       <Cards />
       <Popup

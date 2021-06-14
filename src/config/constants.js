@@ -40,6 +40,8 @@ const images = [
 
 const API_URL = 'https://api.memory.listen-me.ru';
 
+const TRANSITION_TIME = 0.6; // seconds
+
 const errors = {
   nameIsEmpty: 'Please, enter the name.',
   saveResultFetchIsFailed: 'Sorry, saving the result is failed. =('
@@ -48,5 +50,6 @@ const errors = {
 export {
   images,
   API_URL,
+  TRANSITION_TIME,
   errors
 };

@@ -9,15 +9,12 @@ const TimerElement = styled.span`
   font-weight: 500;
   font-size: 32px;
   width: 92px;
-  visibility: ${(props) => props.isVisible ? 'visible' : 'hidden'};
 `;
 
 function Timer() {
   const dispatch = useDispatch();
 
   const timer = useSelector((state) => state.timer);
-  const gameWasStarted = useSelector((state) => state.game.wasStarted);
-  const gameWasEnded = useSelector((state) => state.game.wasEnded);
 
   React.useEffect(
     () => {
@@ -30,11 +27,11 @@ function Timer() {
         return () => clearInterval(intervalId);
       }
     },
-    [dispatch, timer.start, timer.isStarted]
+    [dispatch, timer.isStarted]
   );
-  console.log('timer');
+
   return (
-    <TimerElement isVisible={gameWasStarted || gameWasEnded}>
+    <TimerElement>
       {formatTimer(timer.delta)}
     </TimerElement>
   );

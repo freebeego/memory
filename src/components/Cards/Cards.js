@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { endGame, hideShownCard, openPairedCards, showCard } from '../../store/game/gameSlice';
-import { stopTimer } from '../../store/timer/timerSlice';
-import { openSaveResult } from '../../store/popups/popupsSlice';
+import { TRANSITION_TIME } from '../../config/constants';
+import { finishGame, selectCard } from '../../store/game/thunks';
 
 const CardsList = styled.ul`
   margin: auto;
@@ -22,15 +21,15 @@ const Card = styled.li`
   background-color: #f0f8ff;
 
   &:hover {
-    cursor: ${props => props.isOpen ? 'unset' : 'pointer'};
+    cursor: ${(props) => props.isOpen ? 'unset' : 'pointer'};
   }
 
   & .front {
-    transform: ${(props) => props.opened ? 'rotateY(360deg)' : 'rotateY(180deg)'};
+    transform: ${(props) => props.isOpen ? 'rotateY(360deg)' : 'rotateY(180deg)'};
   }
 
   & .back {
-    transform: ${(props) => props.opened ? 'rotateY(180deg)' : 'none'};
+    transform: ${(props) => props.isOpen ? 'rotateY(180deg)' : 'none'};
   }
 `;
 
@@ -48,7 +47,7 @@ const CardFront = styled.div`
   top: 0;
   backface-visibility: hidden;
   visibility: ${(props) => props.isVisible ? 'visible' : 'hidden'};
-  transition: transform .6s, visibility .5s;
+  transition: transform ${String(TRANSITION_TIME)}s, visibility;
 `;
 
 const CardBack = styled.div`
@@ -59,7 +58,7 @@ const CardBack = styled.div`
   left: 0;
   top: 0;
   backface-visibility: hidden;
-  transition: transform .6s;
+  transition: transform ${String(TRANSITION_TIME)}s;
 `;
 
 function Cards() {
@@ -67,51 +66,33 @@ function Cards() {
 
   const game = useSelector((state) => state.game);
 
-  const [timeoutId, setTimeoutId] = React.useState(null);
-
   React.useEffect(
     () => {
-      if (game.cards.every((card) => card.isOpen === true)) {
-        dispatch(stopTimer());
-        dispatch(endGame());
-        dispatch(openSaveResult());
+      if (game.hiddenCardsNumber === 0) {
+        dispatch(finishGame());
       }
     },
-    [game.cards, dispatch]
+    [game.hiddenCardsNumber, dispatch]
   );
-  console.log('cards');
-  function onCard(card) {
-    if (timeoutId !== null) {
-      clearTimeout(timeoutId);
-      setTimeoutId(0);
-    }
-    if (game.wasStarted) {
-      if (card.path === game.shownCard.path && card.id !== game.shownCard.id) {
-        dispatch(openPairedCards(card));
-      } else {
-        dispatch(showCard(card));
-        setTimeoutId(
-          setTimeout(
-            () => {
-              dispatch(hideShownCard());
-            },
-            5000
-          )
-        );
-      }
+
+  function onCard(selectedCard) {
+    if (selectedCard.isVisible && game.firstSelectedCard !== selectedCard && game.secondSelectedCard !== selectedCard) {
+      dispatch(selectCard(selectedCard));
     }
   }
-
+console.log(game.isFinished);
   return (
     <CardsList>
       {game.cards.map((card) =>
         <Card
           key={card.id}
-          opened={!game.wasStarted || card.isOpen || card === game.shownCard}
-          isOpen={card.isOpen}
+          isOpen={
+            game.firstSelectedCard === card || game.secondSelectedCard === card ||
+            !game.isStarted || game.isFinished || !card.isVisible
+          }
           onClick={() => onCard(card)}
         >
-          <CardFront image={card.path} className="front" isVisible={!card.isOpen} />
+          <CardFront image={card.path} className="front" isVisible={card.isVisible} />
           <CardBack className="back" />
         </Card>
       )}
