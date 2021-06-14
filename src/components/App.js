@@ -34,11 +34,7 @@ function App() {
   const popups = useSelector(state => state.popups);
 
   function onStart() {
-    if (!isGameStarted) {
-      dispatch(startGame());
-    } else {
-      // dispatch(hideAllCards());
-    }
+    dispatch(startGame());
   }
 
   return (

@@ -65,6 +65,7 @@ const gameSlice = createSlice({
       state.isStarted = true;
       state.isFinished = false;
       state.hiddenCardsNumber = state.cards.length;
+      state.cards = state.cards.map((card) => ({ ...card, isVisible: true }));
     },
     finish: (state) => {
       state.isStarted = false;
