@@ -1,17 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { tickTimer } from '../../store/timer/timerSlice';
 import formatTimer from '../../utils/formatTimer';
 import { selectDelta, selectIsTimerStarted } from '../../store/timer/selectors';
-
-const TimerElement = styled.span`
-  font-family: 'Inter', Arial, sans-serif;
-  font-weight: 500;
-  font-size: 32px;
-  width: 92px;
-`;
+import TimerElement from './TimerElement';
 
 function Timer({ isTimerStarted, delta, tickTimer }) {
   React.useEffect(

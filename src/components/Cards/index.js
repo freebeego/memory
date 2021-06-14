@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { TRANSITION_TIME } from '../../config/constants';
 import { finishGame, selectCard } from '../../store/game/thunks';
 import {
   selectCards,
@@ -12,63 +10,10 @@ import {
   selectSecondSelectedCard,
   selectHiddenCardsNumber
 } from '../../store/game/selectors';
-
-const CardsList = styled.ul`
-  margin: auto;
-  display: grid;
-  grid-template-columns: repeat(6, 10vw);
-  grid-auto-rows: 1fr;
-  gap: 10px;
-  list-style: none;
-  padding: 0;
-`;
-
-const Card = styled.li`
-  position: relative;
-  height: 10vh;
-  perspective: 30vw;
-  background-color: #f0f8ff;
-
-  &:hover {
-    cursor: ${(props) => props.isOpen ? 'unset' : 'pointer'};
-  }
-
-  & .front {
-    transform: ${(props) => props.isOpen ? 'rotateY(360deg)' : 'rotateY(180deg)'};
-  }
-
-  & .back {
-    transform: ${(props) => props.isOpen ? 'rotateY(180deg)' : 'none'};
-  }
-`;
-
-const CardFront = styled.div`
-  background-image: url('${(props) => props.image}');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: #f0f8ff;
-  width: 100%;
-  height: 100%;
-  border: 1px solid #000;
-  box-sizing: border-box;
-  position: absolute;
-  left: 0;
-  top: 0;
-  backface-visibility: hidden;
-  visibility: ${(props) => props.isVisible ? 'visible' : 'hidden'};
-  transition: transform ${String(TRANSITION_TIME)}s, visibility;
-`;
-
-const CardBack = styled.div`
-  background-color: #000;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  backface-visibility: hidden;
-  transition: transform ${String(TRANSITION_TIME)}s;
-`;
+import CardsList from './CardsList';
+import Card from './Card';
+import CardFront from './CardFront';
+import CardBack from './CardBack';
 
 function Cards({
                  cards,
