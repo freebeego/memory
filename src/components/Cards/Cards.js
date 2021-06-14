@@ -124,7 +124,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   selectCard: (selectedCard) => dispatch(selectCard(selectedCard)),
-  finishGame: () => dispatch(finishGame())
+  finishGame: () => dispatch(finishGame()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cards);

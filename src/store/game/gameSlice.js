@@ -18,7 +18,6 @@ const gameSlice = createSlice({
     isFinished: false,
     firstSelectedCard: null,
     secondSelectedCard: null,
-    timeoutId: null,
     hiddenCardsNumber: null
   },
   reducers: {
@@ -51,13 +50,9 @@ const gameSlice = createSlice({
       state.firstSelectedCard = null;
       state.secondSelectedCard = null;
     },
-    setTimeoutId: (state, action) => {
-      state.timeoutId = action.payload;
-    },
-    unsetTimeoutId: (state) => {
-      state.timeoutId = null;
-    },
     start: (state) => {
+      state.firstSelectedCard = null;
+      state.secondSelectedCard = null;
       state.isStarted = true;
       state.isFinished = false;
       state.hiddenCardsNumber = state.cards.length;
@@ -77,8 +72,6 @@ export const {
   openPairCards,
   setSelectedCard,
   unsetSelectedCards,
-  setTimeoutId,
-  unsetTimeoutId,
   start,
   finish
 } = gameSlice.actions;
