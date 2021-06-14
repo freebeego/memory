@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { tickTimer } from '../../store/timer/timerSlice';
 import formatTimer from '../../utils/formatTimer';
+import { selectDelta, selectIsTimerStarted } from '../../store/timer/selectors';
 
 const TimerElement = styled.span`
   font-family: 'Inter', Arial, sans-serif;
@@ -14,11 +15,12 @@ const TimerElement = styled.span`
 function Timer() {
   const dispatch = useDispatch();
 
-  const timer = useSelector((state) => state.timer);
+  const isTimerStarted = useSelector(selectIsTimerStarted);
+  const delta = useSelector(selectDelta);
 
   React.useEffect(
     () => {
-      if (timer.isStarted) {
+      if (isTimerStarted) {
         const intervalId = setInterval(
           () => dispatch(tickTimer()),
           1000
@@ -27,12 +29,12 @@ function Timer() {
         return () => clearInterval(intervalId);
       }
     },
-    [dispatch, timer.isStarted]
+    [dispatch, isTimerStarted]
   );
 
   return (
     <TimerElement>
-      {formatTimer(timer.delta)}
+      {formatTimer(delta)}
     </TimerElement>
   );
 }

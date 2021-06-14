@@ -6,6 +6,8 @@ import { addNewResult } from '../../store/results/thunks';
 import { selectFetchStatus } from '../../store/results/selectors';
 import { errors } from '../../config/constants';
 import { setDefaultFetchStatus } from '../../store/results/resultsSlice';
+import { selectDelta } from '../../store/timer/selectors';
+import { selectIsSaveResultOpened } from '../../store/popups/selectors';
 
 const Form = styled.form`
   display: flex;
@@ -67,8 +69,8 @@ const SaveButton = styled.button`
 function SaveTimeForm() {
   const dispatch = useDispatch();
 
-  const isSaveResultOpened = useSelector(state => state.popups.isSaveResultOpened);
-  const delta = useSelector(state => state.timer.delta);
+  const isSaveResultOpened = useSelector(selectIsSaveResultOpened);
+  const delta = useSelector(selectDelta);
   const fetchStatus = useSelector(selectFetchStatus);
 
   const inputRef = React.useRef(null);

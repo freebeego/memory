@@ -3,6 +3,14 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { TRANSITION_TIME } from '../../config/constants';
 import { finishGame, selectCard } from '../../store/game/thunks';
+import {
+  selectCards,
+  selectIsGameStarted,
+  selectIsGameFinished,
+  selectFirstSelectedCard,
+  selectSecondSelectedCard,
+  selectHiddenCardsNumber
+} from '../../store/game/selectors';
 
 const CardsList = styled.ul`
   margin: auto;
@@ -64,31 +72,36 @@ const CardBack = styled.div`
 function Cards() {
   const dispatch = useDispatch();
 
-  const game = useSelector((state) => state.game);
+  const Cards = useSelector(selectCards);
+  const IsGameStarted = useSelector(selectIsGameStarted);
+  const IsGameFinished = useSelector(selectIsGameFinished);
+  const FirstSelectedCard = useSelector(selectFirstSelectedCard);
+  const SecondSelectedCard = useSelector(selectSecondSelectedCard);
+  const HiddenCardsNumber = useSelector(selectHiddenCardsNumber);
 
   React.useEffect(
     () => {
-      if (game.hiddenCardsNumber === 0) {
+      if (HiddenCardsNumber === 0) {
         dispatch(finishGame());
       }
     },
-    [game.hiddenCardsNumber, dispatch]
+    [HiddenCardsNumber, dispatch]
   );
 
   function onCard(selectedCard) {
-    if (selectedCard.isVisible && game.firstSelectedCard !== selectedCard && game.secondSelectedCard !== selectedCard) {
+    if (selectedCard.isVisible && FirstSelectedCard !== selectedCard && SecondSelectedCard !== selectedCard) {
       dispatch(selectCard(selectedCard));
     }
   }
 
   return (
     <CardsList>
-      {game.cards.map((card) =>
+      {Cards.map((card) =>
         <Card
           key={card.id}
           isOpen={
-            game.firstSelectedCard === card || game.secondSelectedCard === card ||
-            !game.isStarted || game.isFinished || !card.isVisible
+            FirstSelectedCard === card || SecondSelectedCard === card ||
+            !IsGameStarted || IsGameFinished || !card.isVisible
           }
           onClick={() => onCard(card)}
         >

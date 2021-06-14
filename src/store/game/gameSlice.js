@@ -57,10 +57,6 @@ const gameSlice = createSlice({
     unsetTimeoutId: (state) => {
       state.timeoutId = null;
     },
-    /*hideAllCards: (state) => {
-      state.cards = state.cards.map((card) => ({ ...card, isOpen: false }));
-      // state.shownCard = {};
-    },*/
     start: (state) => {
       state.isStarted = true;
       state.isFinished = false;
@@ -85,8 +81,6 @@ export const {
   unsetTimeoutId,
   start,
   finish
-  /*endGame,
-  hideAllCards*/
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

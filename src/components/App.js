@@ -8,6 +8,8 @@ import Popup from './Popup/Popup';
 import YourTime from './YourTime/YourTime';
 import SaveTimeForm from './SaveTimeForm/SaveTimeForm';
 import Results from './Results/Results';
+import { selectIsResultsOpened, selectIsSaveResultOpened } from '../store/popups/selectors';
+import { selectIsGameStarted } from '../store/game/selectors';
 
 const StartButton = styled.button`
   font-family: 'Inter', Arial, sans-serif;
@@ -30,8 +32,9 @@ const StartButton = styled.button`
 function App() {
   const dispatch = useDispatch();
 
-  const isGameStarted = useSelector((state) => state.game.isStarted);
-  const popups = useSelector(state => state.popups);
+  const isGameStarted = useSelector(selectIsGameStarted);
+  const isSaveResultOpened = useSelector(selectIsSaveResultOpened);
+  const isResultsOpened = useSelector(selectIsResultsOpened);
 
   function onStart() {
     dispatch(startGame());
@@ -45,14 +48,14 @@ function App() {
       </StartButton>
       <Cards />
       <Popup
-        isOpen={popups.isSaveResultOpened}
+        isOpen={isSaveResultOpened}
         title="Congratulations! You win!"
       >
         <YourTime />
         <SaveTimeForm />
       </Popup>
       <Popup
-        isOpen={popups.isResultsOpened}
+        isOpen={isResultsOpened}
         title="Results"
       >
         <Results />

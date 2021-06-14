@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import formatTimer from '../../utils/formatTimer';
 import { useSelector } from 'react-redux';
+import { selectDelta } from '../../store/timer/selectors';
 
 const YourTimeElement = styled.span`
   font-family: 'Inter', Arial, sans-serif;
@@ -8,7 +9,7 @@ const YourTimeElement = styled.span`
 `;
 
 function YourTime() {
-  const delta = useSelector((state) => state.timer.delta);
+  const delta = useSelector(selectDelta);
 
   return (
     <>
