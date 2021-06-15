@@ -35,7 +35,10 @@ function Cards({
   );
 
   function onCard(selectedCard) {
-    if (selectedCard.isVisible && firstSelectedCard !== selectedCard && secondSelectedCard !== selectedCard) {
+    if (
+      isGameStarted && selectedCard.isVisible &&
+      firstSelectedCard !== selectedCard && secondSelectedCard !== selectedCard
+    ) {
       selectCard(selectedCard);
     }
   }
