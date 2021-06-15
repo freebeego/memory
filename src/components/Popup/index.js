@@ -5,7 +5,7 @@ import { closePopups } from '../../store/popups/popupsSlice';
 import Overlay from './Overlay';
 import Container from './Container';
 import CloseButton from './CloseButton';
-import Title from '../Header/Title';
+import Title from './Title';
 
 function Popup({ children, title, isOpen, closePopups }) {
   function onOverlayClick(e) {

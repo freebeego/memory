@@ -5,8 +5,12 @@ const LabelName = styled.label`
   font-weight: 500;
   font-size: 16px;
   display: flex;
-  align-items: flex-end;
+  justify-content: center;
   white-space: nowrap;
+
+  @media screen and (min-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 export default LabelName;

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 const Card = styled.li`
   position: relative;
-  height: 10vh;
   perspective: 30vw;
   background-color: #f0f8ff;
 

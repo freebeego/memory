@@ -9,9 +9,14 @@ const InputName = styled.input`
   border-bottom: 1px solid #000;
   outline: unset;
   box-sizing: border-box;
+  width: 40%;
 
   &:focus {
     border-bottom-color: #f0f8ff;
+  }
+
+  @media screen and (min-width: 768px) {
+    font-size: 18px;
   }
 `;
 

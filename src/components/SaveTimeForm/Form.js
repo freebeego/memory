@@ -5,9 +5,9 @@ const Form = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 25px;
-  width: 50%;
-  padding: 50px 0 10px;
+  gap: 20px;
+  width: 90%;
+  padding: 20px 0 0;
 `;
 
 export default Form;
