@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StartButton = styled.button`
+const Button = styled.button`
   font-family: 'Inter', Arial, sans-serif;
   font-size: 14px;
   text-align: center;
@@ -11,7 +11,6 @@ const StartButton = styled.button`
   width: 80px;
   height: 26px;
   box-sizing: border-box;
-  margin: 0 auto;
   padding: 0;
 
   &:hover {
@@ -26,4 +25,4 @@ const StartButton = styled.button`
   }
 `;
 
-export default StartButton;
+export default Button;

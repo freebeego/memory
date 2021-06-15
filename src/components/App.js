@@ -10,7 +10,7 @@ import Popup from './Popup';
 import YourTime from './YourTime';
 import SaveTimeForm from './SaveTimeForm';
 import Results from './Results';
-import StartButton from './StartButton/StartButton';
+import StartButton from './StartButton';
 
 function App({ isGameStarted, isSaveResultOpened, isResultsOpened, startGame }) {
   return (

@@ -12,7 +12,7 @@ import Form from './Form';
 import LabelName from './LabelName';
 import InputName from './InputName';
 import Error from './Error';
-import SaveButton from './SaveButton';
+import SaveButton from '../Button';
 
 function SaveTimeForm({
                         isSaveResultOpened,
