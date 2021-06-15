@@ -8,6 +8,13 @@ import CloseButton from './CloseButton';
 import Title from './Title';
 
 function Popup({ children, title, isOpen, closePopups }) {
+  React.useEffect(
+    () => {
+      document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+    },
+    [isOpen]
+  );
+
   function onOverlayClick(e) {
     if (e.target === e.currentTarget) {
       closePopups();
